@@ -17,7 +17,7 @@ const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "abcdefgh";
 
 app.use(cors({
-   origin: 'https://meek-alpaca-4f891e.netlify.app/',
+   origin: 'https://wonderful-ganache-88f949.netlify.app',
    credentials: true,
    allowedHeaders: ["Content-Type", "Authorization"]
 }));
