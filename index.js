@@ -16,7 +16,9 @@ const app = express();
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "abcdefgh";
 
-app.use(cors("*"));
+app.use(cors({
+  origin:"https://exquisite-mousse-7a4519.netlify.app"
+}));
 
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
