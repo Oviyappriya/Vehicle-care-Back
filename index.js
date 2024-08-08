@@ -16,7 +16,7 @@ const app = express();
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "abcdefgh";
 
-app.use(cors());
+app.use(cors("*"));
 
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
