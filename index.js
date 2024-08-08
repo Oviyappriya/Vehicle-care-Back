@@ -17,7 +17,8 @@ const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "abcdefgh";
 
 app.use(cors({
-  origin:"https://exquisite-mousse-7a4519.netlify.app"
+  origin:"https://exquisite-mousse-7a4519.netlify.app",
+  credentials: true, 
 }));
 
 app.use(cookieParser());
