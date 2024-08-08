@@ -16,11 +16,7 @@ const app = express();
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "abcdefgh";
 
-app.use(cors({
-   origin: 'https://wonderful-ganache-88f949.netlify.app',
-   credentials: true,
-   allowedHeaders: ["Content-Type", "Authorization"]
-}));
+app.use(cors());
 
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
