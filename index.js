@@ -17,7 +17,7 @@ const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "abcdefgh";
 
 app.use(cors({
-   origin: 'https://magenta-axolotl-6650f1.netlify.app',
+   origin: 'https://meek-alpaca-4f891e.netlify.app/',
    credentials: true,
    allowedHeaders: ["Content-Type", "Authorization"]
 }));
