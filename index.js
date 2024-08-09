@@ -243,10 +243,7 @@ app.get("/services", async (req, res) => {
 });
 app.post("/bookings", async (req, res) => {
   try {
-    await mongoose.connect(process.env.MONGO_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGO_URL);
 
     const userData = await getUserDataFromReq(req); // Ensure this function works as expected
 
