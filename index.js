@@ -15,22 +15,11 @@ const app = express();
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "abcdefgh";
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://exquisite-mousse-7a4519.netlify.app'
-];
-
-// Configure CORS
-app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
+const corsOptions = {
+  origin: ['http://localhost:5173', 'https://exquisite-mousse-7a4519.netlify.app'],
+  credentials: true,
+};
+app.use('*',cors(corsOptions));
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(express.json());
@@ -281,7 +270,7 @@ app.get("/bookings", async (req, res) => {
   res.json(await Booking.find({ user: userData._id }).populate("service"));
 });
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); 
+  res.header('Access-Control-Allow-Origin', 'http://localhost:5173'); 
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
