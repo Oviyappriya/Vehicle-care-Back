@@ -15,12 +15,23 @@ const app = express();
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "abcdefgh";
+const allowedOrigins = [
+  "http://localhost:5173", // Development frontend
+  "https://exquisite-mousse-7a4519.netlify.app", // Production frontend
+];
 
-app.use(cors({
-  origin:"https://exquisite-mousse-7a4519.netlify.app",
-  credentials: true, 
-}));
-
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(express.json());
