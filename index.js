@@ -241,27 +241,34 @@ app.get("/services", async (req, res) => {
   mongoose.connect(process.env.MONGO_URL);
   res.json(await Service.find());
 });
-
 app.post("/bookings", async (req, res) => {
-  mongoose.connect(process.env.MONGO_URL);
-  const userData = await getUserDataFromReq(req);
-  const { service, checkIn, checkOut, name, phone, price } = req.body;
-
-  Booking.create({
-    service,
-    checkIn,
-    checkOut,
-    name,
-    phone,
-    price,
-    user: userData._id,
-  })
-    .then((doc) => {
-      res.json(doc);
-    })
-    .catch((err) => {
-      throw err;
+  try {
+    await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
+
+    const userData = await getUserDataFromReq(req); // Ensure this function works as expected
+
+    const { service, checkIn, checkOut, name, phone, price } = req.body;
+
+    const booking = await Booking.create({
+      service,
+      checkIn,
+      checkOut,
+      name,
+      phone,
+      price,
+      user: userData._id,
+    });
+
+    res.json(booking);
+  } catch (err) {
+    console.error('Error in /bookings route:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  } finally {
+    mongoose.connection.close(); // Ensure the connection is closed after the operation
+  }
 });
 
 app.get("/bookings", async (req, res) => {
@@ -270,7 +277,7 @@ app.get("/bookings", async (req, res) => {
   res.json(await Booking.find({ user: userData._id }).populate("service"));
 });
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5173'); 
+  res.header('Access-Control-Allow-Origin', '*'); 
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
