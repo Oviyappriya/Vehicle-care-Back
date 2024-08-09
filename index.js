@@ -16,8 +16,7 @@ const app = express();
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "abcdefgh";
 const allowedOrigins = [
-  "http://localhost:5173", // Development frontend
-  "https://exquisite-mousse-7a4519.netlify.app", // Production frontend
+  "https://exquisite-mousse-7a4519.netlify.app"
 ];
 
 app.use(
@@ -281,7 +280,13 @@ app.get("/bookings", async (req, res) => {
   const userData = await getUserDataFromReq(req);
   res.json(await Booking.find({ user: userData._id }).populate("service"));
 });
-
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:5173'); 
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  next();
+});
 app.listen(4000, () => {
   console.log("Server is running on port 4000");
 });
